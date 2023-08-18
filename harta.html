@@ -159,8 +159,8 @@
         document.addEventListener('DOMContentLoaded', function () {
             var map = L.map('map').setView([45.943158, 24.966755], 8);
             var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-            var url1 = 'date/judete_4326_geom.geojson';
-            var url2 = 'date/uat_4326_geom.geojson';
+            var url1 = 'https://St3f4nIN.github.io/hartaindicatortest/date/judete_4326_geom.geojson';
+            var url2 = 'https://St3f4nIN.github.io/hartaindicatortest/date/uat_4326_geom.geojson';
 			
             Promise.all([fetch(url1), fetch(url2)])
                 .then(responses => Promise.all(responses.map(response => response.json())))
