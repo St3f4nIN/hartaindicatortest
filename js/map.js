@@ -337,12 +337,12 @@ function setupMap(map, osm, data) {
 			// Add event listeners to the buttons
 			document.getElementById('open-table-layer1').addEventListener('click', function () {
 				const tableContentLayer1 = generateTableContentForLayer1(geojsonLayer1.getLayers());
-				document.getElementById('table-container').innerHTML = tableContentLayer1;
+				document.getElementById('table-container-layer1').innerHTML = tableContentLayer1;
 			});
 
 			document.getElementById('open-table-layer2').addEventListener('click', function () {
 				const tableContentLayer2 = generateTableContentForLayer2(geojsonLayer2.getLayers());
-				document.getElementById('table-container').innerHTML = tableContentLayer2;
+				document.getElementById('table-container-layer1').innerHTML = tableContentLayer2;
 			});
 			
 			// Function to generate table content for Layer 1
@@ -353,10 +353,10 @@ function setupMap(map, osm, data) {
 				  const name = layer.feature.properties.name;
 				  const population = layer.feature.properties.pop_tot;
 
-				  tableHTML += `<tr><td>${name}</td><td>${population}</td></tr>`;
+				  tableHTML += `<tr data-name="${name}"><td>${name}</td><td>${population}</td></tr>`;
 				});
 
-				tableHTML += '</table><button id="close-table-layer1">Close Table</button>';
+				tableHTML += '</table>';
 				return tableHTML;
 			}
 
@@ -368,21 +368,89 @@ function setupMap(map, osm, data) {
 				  const name = layer.feature.properties.name;
 				  const population = layer.feature.properties.pop_tot;
 
-				  tableHTML += `<tr><td>${name}</td><td>${population}</td></tr>`;
+				  tableHTML += `<tr data-name="${name}"><td>${name}</td><td>${population}</td></tr>`;
 				});
 
-				tableHTML += '</table><button id="close-table-layer2">Close Table</button>';
+				tableHTML += '</table>';
 				return tableHTML;
 			}
 			  
 			  // Add event listeners to the close buttons
-			document.getElementById('table-container').addEventListener('click', function (event) {
-				if (event.target.id === 'close-table-layer1') {
-				  document.getElementById('table-container').innerHTML = '';
-				} else if (event.target.id === 'close-table-layer2') {
-				  document.getElementById('table-container').innerHTML = '';
+			//document.getElementById('table-container').addEventListener('click', function (event) {
+			//	if (event.target.id === 'close-table-layer1') {
+			//	  document.getElementById('table-container').innerHTML = '';
+			//	} else if (event.target.id === 'close-table-layer2') {
+			//	  document.getElementById('table-container').innerHTML = '';
+			//	}
+			//});
+			
+			// Add event listeners to the open table buttons
+			document.getElementById('open-table-layer1').addEventListener('click', function () {
+				document.getElementById('table-container-layer1').style.display = 'block';
+				document.getElementById('table-container-layer2').style.display = 'none';
+			});
+
+			document.getElementById('open-table-layer2').addEventListener('click', function () {
+				document.getElementById('table-container-layer2').style.display = 'block';
+				document.getElementById('table-container-layer1').style.display = 'none';
+			});
+			
+			// Function to highlight a selected polygon and zoom to its extent (with minimum zoom level)
+			function highlightPolygon(name) {
+				if (selectedLayer) {
+					selectedLayer.setStyle({ weight: 1, color: 'white' });
+				}
+				selectedLayer = geojsonLayer1.getLayers().find(layer => {
+					return layer.feature.properties.name === name;
+				});
+
+				if (selectedLayer) {
+					// Highlight the selected layer
+					selectedLayer.setStyle({ weight: 5, color: 'red' });
+
+					// Bring the selected layer to the front
+					selectedLayer.bringToFront();
+
+					// Update the label to show the selected name
+					updateSelectedLabel(name);
+
+					// Get the bounds of the selected polygon
+					const bounds = selectedLayer.getBounds();
+
+					// Calculate the best zoom level that fits the polygon within the map's viewport
+					const bestZoom = map.getBoundsZoom(bounds);
+
+					// Ensure the calculated zoom level is not below 10
+					const finalZoom = Math.max(bestZoom, 5);
+
+					// Set the new zoom level and center the map on the polygon
+					if (finalZoom >= 10) {
+						map.setView(bounds.getCenter(), finalZoom);
+					} else {
+						map.setView(bounds.getCenter(), 5);
+					}
+				}
+			}
+
+			
+			// Add event listeners to the table rows for layer 1
+			document.getElementById('table-container-layer1').addEventListener('click', function (event) {
+				const selectedName = event.target.parentElement.getAttribute('data-name');
+				if (selectedName) {
+					highlightPolygon(selectedName);
 				}
 			});
+
+			// Add event listeners to the table rows for layer 2
+			document.getElementById('table-container-layer2').addEventListener('click', function (event) {
+				const selectedName = event.target.parentElement.getAttribute('data-name');
+				if (selectedName) {
+					highlightPolygon(selectedName);
+				}
+			});
+			
+
+			
 			
 			// Function to update the label with the selected name
 			function updateSelectedLabel(name) {

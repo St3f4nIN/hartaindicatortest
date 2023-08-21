@@ -125,6 +125,33 @@
 			display: none;
 		}
 		
+		/* Position the table containers at the bottom of the page */
+		#table-container-layer1,
+		#table-container-layer2 {
+			position: absolute;
+			width: 50%; /* Take up half of the width of the horizontal line */
+			max-height: 20vh; /* Limit height to 20% of the viewport height */
+			overflow-y: auto; /* Add vertical scrollbar if content overflows */
+			background-color: white;
+			padding: 10px;
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+			border-radius: 5px;
+			z-index: 1000;
+			display: none; /* Start with tables hidden */
+		}
+
+		/* Position the first table at the bottom left */
+		#table-container-layer1 {
+			bottom: 0;
+			left: 0;
+		}
+
+		/* Position the second table at the bottom right */
+		#table-container-layer2 {
+			bottom: 0;
+			right: 0;
+		}
+
     </style>
 </head>
 <body>
@@ -149,8 +176,9 @@
 		<button id="search-btn">Search</button>
 	</div>
 	
-	<!-- Add a div element to hold the table and position it on the right side -->
-	<div id="table-container" style="position: absolute; top: 10px; right: 10px; background-color: white; padding: 10px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); border-radius: 5px; z-index: 1000;"></div>
+	<!-- Add div elements to hold the tables at the bottom of the page -->
+	<div id="table-container-layer1"></div>
+	<div id="table-container-layer2"></div>
 	
 	<div id="selected-name-label"></div>
 	
@@ -167,10 +195,29 @@
                 .then(data => {
                     setupMap(map, osm, data); // Call the setupMap function with the map, osm, and data
 					
-					var selectedNameLabel = document.getElementById('selected-name-label'); 
+					var selectedNameLabel = document.getElementById('selected-name-label'); // Get the label element
+					var searchButton = document.getElementById('search-btn'); // Get the search button
+					
+					// Initialize a flag to indicate if the label should be shown
+					var showLabel = false;
+
+					// Add event listener for the search button
+					searchButton.addEventListener('click', function () {
+						showLabel = true; // Set the flag to show the label
+					});
+					
 					// Add event listeners for zoom and move start events
 					map.on('zoomstart movestart', function () {
-						selectedNameLabel.style.display = 'none'; // Hide the label
+						if (!showLabel) {
+							selectedNameLabel.style.visibility = 'hidden'; // Hide the label
+						}
+					});
+					
+					// Add event listeners for zoom and move end events
+					map.on('zoomend moveend', function () {
+						if (showLabel) {
+							selectedNameLabel.style.visibility = 'visible'; // Show the label
+						}
 					});
                 });
         });
