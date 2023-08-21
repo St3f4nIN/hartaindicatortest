@@ -138,19 +138,33 @@
 			border-radius: 5px;
 			z-index: 1000;
 			display: none; /* Start with tables hidden */
+			bottom: 0; /* Position both tables at the bottom */
 		}
 
-		/* Position the first table at the bottom left */
+		/* Position the first table at the left */
 		#table-container-layer1 {
-			bottom: 0;
 			left: 0;
 		}
 
-		/* Position the second table at the bottom right */
+		/* Position the second table at the right */
 		#table-container-layer2 {
-			bottom: 0;
 			right: 0;
 		}
+		
+
+		  /* Style for the county filter select element */
+		  #county-filter {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 2; /* Place it above the table and other objects */
+			padding: 5px;
+			border: 1px solid #ccc;
+			background-color: white;
+		  }
+
+
+
 
     </style>
 </head>
@@ -178,7 +192,11 @@
 	
 	<!-- Add div elements to hold the tables at the bottom of the page -->
 	<div id="table-container-layer1"></div>
-	<div id="table-container-layer2"></div>
+	<div id="table-container-layer2">
+	    <select id="county-filter">
+        <option value="">Judete</option>
+    </select>
+	</div>
 	
 	<div id="selected-name-label"></div>
 	

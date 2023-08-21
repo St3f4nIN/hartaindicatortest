@@ -188,9 +188,9 @@ function setupMap(map, osm, data) {
 			
 			
 			function updateSearchOptions(selectedCounty) {
-				console.log('Functie update Selected county:', selectedCounty);
+				//console.log('Functie update Selected county:', selectedCounty);
 				var nameOptions = [];
-				console.log('Functie update nameOption gol:', nameOptions);
+				//console.log('Functie update nameOption gol:', nameOptions);
 				
 				if (!selectedCounty || selectedCounty === '') {
 					joinedGeojsonLayer2.forEach(function (feature) {
@@ -204,11 +204,11 @@ function setupMap(map, osm, data) {
 					});
 				}
 				
-				console.log('Functie update nameoption populat:', nameOptions);
+				//console.log('Functie update nameoption populat:', nameOptions);
 
 				var nameSelect = document.getElementById('search-name');
 				//var nameSelect = container.querySelector('#search-name');
-				console.log('Functie update nameselect:', nameSelect);
+				//console.log('Functie update nameselect:', nameSelect);
 				nameSelect.innerHTML = ''; // Clear previous options
 				
 				// Populate the 'search-name' select element with the options
@@ -220,7 +220,7 @@ function setupMap(map, osm, data) {
 					option.textContent = name;
 					nameSelect.appendChild(option);
 				});
-				console.log('Functie update nameoption dupa:', nameOptions);
+				//console.log('Functie update nameoption dupa:', nameOptions);
 			}
 			
 			var countyOptions;
@@ -231,7 +231,7 @@ function setupMap(map, osm, data) {
 				container = L.DomUtil.create('div', 'search-container');
 				
 				
-				console.log('Before population of search-county:');
+				//console.log('Before population of search-county:');
 				//selectedCounty = document.getElementById('search-county'); 
 				//console.log('s-a selectat un county:', selectedCounty);
 
@@ -246,7 +246,7 @@ function setupMap(map, osm, data) {
 				var countyOptionsHTML = countyOptions
 					.map(county => `<option value="${county}">${county}</option>`)
 					.join('');
-				console.log('After population of search-county2:', countyOptions);
+				//console.log('After population of search-county2:', countyOptions);
 				
 				container.innerHTML = `
 					<select id="search-county">
@@ -265,11 +265,11 @@ function setupMap(map, osm, data) {
 				//var nameSelect = document.getElementById('search-name'); // Get the 'search-name' 	dropdown
 				var nameSelect = container.querySelector('#search-name');
 				
-				console.log('s-a selectat un nume:', nameSelect);
+				//console.log('s-a selectat un nume:', nameSelect);
 				
 				nameSelect.addEventListener('change', function (event) {
 					var selectedName = event.target.value;
-					console.log('Dupa ce s-a selectat un nume:', selectedName);
+					//console.log('Dupa ce s-a selectat un nume:', selectedName);
 					// Perform any additional action you want when the name is selected (if needed)
 				});
 			    
@@ -314,14 +314,14 @@ function setupMap(map, osm, data) {
 				
 			//var selectCounty = document.getElementById('search-county');
 			var selectCounty = container.querySelector('#search-county');
-			console.log('selectCounty dupa document:', selectCounty);
+			//console.log('selectCounty dupa document:', selectCounty);
 
 			selectCounty.addEventListener('change', function (event) {
 				var selectedCounty = event.target.value;
-				console.log('County select element:', selectedCounty);
+				//console.log('County select element:', selectedCounty);
 				updateSearchOptions(selectedCounty);
 			});
-			console.log('Event listener attached!');
+			//console.log('Event listener attached!');
 
 				return container;
 			};
@@ -335,16 +335,45 @@ function setupMap(map, osm, data) {
 			overlayControl._container.innerHTML += `<div><button id="open-table-layer2">Open Table Layer 2</button></div>`;
 			
 			// Add event listeners to the buttons
-			document.getElementById('open-table-layer1').addEventListener('click', function () {
-				const tableContentLayer1 = generateTableContentForLayer1(geojsonLayer1.getLayers());
-				document.getElementById('table-container-layer1').innerHTML = tableContentLayer1;
-			});
 
+			
 			document.getElementById('open-table-layer2').addEventListener('click', function () {
-				const tableContentLayer2 = generateTableContentForLayer2(geojsonLayer2.getLayers());
-				document.getElementById('table-container-layer1').innerHTML = tableContentLayer2;
+				console.log('s-a apasat butonul tb 2');
+				const tableContainerLayer2 = document.getElementById('table-container-layer2');
+
+				// Toggle the display of the table container
+				if (tableContainerLayer2.style.display === 'block') {
+					tableContainerLayer2.style.display = 'none';
+				} else {
+					// Show the table for Layer 2 and hide the table for Layer 1
+					tableContainerLayer2.style.display = 'block';
+
+					// Populate the county filter dropdown
+					populateCountyFilterDropdown();
+
+					// Get the first county alphabetically
+					const firstCounty = countyOptions[0];
+					console.log('first county  este: ',firstCounty)
+
+					// Call the updateTableContentForLayer2 function with the first county
+					updateTableContentForLayer2(firstCounty);
+				}
 			});
 			
+			document.getElementById('open-table-layer1').addEventListener('click', function () {
+				console.log('S-a apasat but tbl1');
+				const tableContainerLayer1 = document.getElementById('table-container-layer1');
+				const tableContentLayer1 = generateTableContentForLayer1(geojsonLayer1.getLayers());
+				
+				if (tableContainerLayer1.style.display === 'block') {
+					tableContainerLayer1.style.display = 'none';
+				} else {
+					tableContainerLayer1.style.display = 'block';
+					tableContainerLayer1.innerHTML = tableContentLayer1;
+				}
+			});
+		
+
 			// Function to generate table content for Layer 1
 			function generateTableContentForLayer1(layers) {
 				let tableHTML = '<h3>Layer 1 Data</h3><table><tr><th>Name</th><th>Population</th></tr>';
@@ -359,48 +388,92 @@ function setupMap(map, osm, data) {
 				tableHTML += '</table>';
 				return tableHTML;
 			}
-
-			  // Function to generate table content for Layer 2
-			function generateTableContentForLayer2(layers) {
+			
+			
+			// Function to generate table content for Layer 2
+			function generateTableContentForLayer2(layers, selectedCounty) {
+				console.log('generateTableContentForLayer2(layers, selectedCounty) is being called. variables: ',layers,' AND ',selectedCounty);
 				let tableHTML = '<h3>Layer 2 Data</h3><table><tr><th>Name</th><th>Population</th></tr>';
 
 				layers.forEach(layer => {
-				  const name = layer.feature.properties.name;
-				  const population = layer.feature.properties.pop_tot;
+					const name = layer.feature.properties.name;
+					const population = layer.feature.properties.pop_tot;
+					const county = layer.feature.properties.county;
 
-				  tableHTML += `<tr data-name="${name}"><td>${name}</td><td>${population}</td></tr>`;
+					if (!selectedCounty || selectedCounty === county) {
+						tableHTML += `<tr data-name="${name}"><td>${name}</td><td>${population}</td></tr>`;
+					}
 				});
 
 				tableHTML += '</table>';
 				return tableHTML;
 			}
-			  
-			  // Add event listeners to the close buttons
-			//document.getElementById('table-container').addEventListener('click', function (event) {
-			//	if (event.target.id === 'close-table-layer1') {
-			//	  document.getElementById('table-container').innerHTML = '';
-			//	} else if (event.target.id === 'close-table-layer2') {
-			//	  document.getElementById('table-container').innerHTML = '';
-			//	}
-			//});
-			
-			// Add event listeners to the open table buttons
-			document.getElementById('open-table-layer1').addEventListener('click', function () {
-				document.getElementById('table-container-layer1').style.display = 'block';
-				document.getElementById('table-container-layer2').style.display = 'none';
-			});
 
-			document.getElementById('open-table-layer2').addEventListener('click', function () {
-				document.getElementById('table-container-layer2').style.display = 'block';
-				document.getElementById('table-container-layer1').style.display = 'none';
-			});
+			function populateCountyFilterDropdown() {
+				console.log('populateCountyFilterDropdown() is being called.');
+				
+				 // Check if the object with ID "county-filter" is loaded in the DOM
+				const countyFilter1 = document.getElementById('county-filter');
+				if (countyFilter1) {
+					console.log('1.Element with ID "county-filter" is loaded in the DOM:', countyFilter1);
+				} else {
+					console.log('1.Element with ID "county-filter" is not found in the DOM.');
+				}
+				
+				const countyFilterDropdown = document.getElementById('county-filter');
+				console.log('countyfilter 1: ',countyFilterDropdown)
+				
+				// Clear previous options
+				countyFilterDropdown.innerHTML = '<option value="">Judete</option>';
+				console.log('countyfilter 2: ',countyFilterDropdown)
+				
+				// Populate the dropdown with county options
+				countyOptions.forEach(county => {
+					const option = document.createElement('option');
+					option.value = county;
+					option.textContent = county;
+					countyFilterDropdown.appendChild(option);
+				});
+				console.log('countyOptions 1: ',countyOptions)
+				
+				// Add event listener to update the table when county selection changes
+				countyFilterDropdown.addEventListener('change', function () {
+					const selectedCounty = countyFilterDropdown.value;
+					console.log('se schimba judetul: ',selectedCounty)
+					updateTableContentForLayer2(selectedCounty);
+				});
+			}
+			
+			function updateTableContentForLayer2(selectedCounty) {
+				console.log('updateTableContentForLayer2(selectedCounty) is being called. Variable: ', selectedCounty);
+				const tableContainer = document.getElementById('table-container-layer2');
+				const layers = geojsonLayer2.getLayers();
+
+				let tableHTML = '<h3>Layer 2 Data</h3><table><tr><th>Name</th><th>Population</th></tr>';
+
+				layers.forEach(layer => {
+					const name = layer.feature.properties.name;
+					const population = layer.feature.properties.pop_tot;
+					const county = layer.feature.properties.county;
+
+					// Filter rows based on selected county
+					if (!selectedCounty || selectedCounty === county) {
+						tableHTML += `<tr data-name="${name}"><td>${name}</td><td>${population}</td></tr>`;
+					}
+				});
+
+				tableHTML += '</table>';
+				tableContainer.innerHTML = tableHTML;
+			}
+			
 			
 			// Function to highlight a selected polygon and zoom to its extent (with minimum zoom level)
-			function highlightPolygon(name) {
+			function highlightPolygon(layer, name) {
+				console.log('highlightPolygon(layer, name) is being called.');
 				if (selectedLayer) {
 					selectedLayer.setStyle({ weight: 1, color: 'white' });
 				}
-				selectedLayer = geojsonLayer1.getLayers().find(layer => {
+				selectedLayer = layer.getLayers().find(layer => {
 					return layer.feature.properties.name === name;
 				});
 
@@ -437,7 +510,7 @@ function setupMap(map, osm, data) {
 			document.getElementById('table-container-layer1').addEventListener('click', function (event) {
 				const selectedName = event.target.parentElement.getAttribute('data-name');
 				if (selectedName) {
-					highlightPolygon(selectedName);
+					highlightPolygon(geojsonLayer1, selectedName);
 				}
 			});
 
@@ -445,7 +518,7 @@ function setupMap(map, osm, data) {
 			document.getElementById('table-container-layer2').addEventListener('click', function (event) {
 				const selectedName = event.target.parentElement.getAttribute('data-name');
 				if (selectedName) {
-					highlightPolygon(selectedName);
+					highlightPolygon(geojsonLayer2, selectedName);
 				}
 			});
 			
@@ -454,6 +527,7 @@ function setupMap(map, osm, data) {
 			
 			// Function to update the label with the selected name
 			function updateSelectedLabel(name) {
+				console.log('updateSelectedLabel(name) is being called.');
 				var label = document.getElementById('selected-name-label');
 				if (label) {
 					label.textContent = 'Selected Name: ' + name;
