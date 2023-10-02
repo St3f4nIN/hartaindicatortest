@@ -1,0 +1,296 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+    height: 100vh;
+    float: left;
+	border-right: 1px solid black;
+}
+
+
+/* Stil Legenda */
+.info.legend {
+    background-color: white;
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.info.legend i {
+    width: 15px;
+    height: 15px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+/* Define the legend colors based on your color scheme */
+.info.legend i.red {
+    background-color: red;
+}
+
+.info.legend i.orange {
+    background-color: orange;
+}
+
+.info.legend i.yellow {
+    background-color: yellow;
+}
+
+.info.legend i.green {
+    background-color: green;
+}
+
+/* Stil zoom to full */
+#zoomToFullData {
+    position: fixed;
+    top: 72px;
+    left: 10px;
+    padding: 10px;
+    background-color: #fff;
+    color: #000;
+    border: 2px solid rgba(100, 100, 100, 0.5);
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+}
+
+#zoomToFullData:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+#zoomToFullData:focus {
+    outline: none;
+}
+
+#zoomIcon {
+    font-size: 20px;
+    margin-right: 5px;
+    color: #000;
+    transform: scale(0.9);
+}
+
+/* Custom CSS for feature tooltips */
+.feature-tooltip {
+    background-color: rgba(255, 255, 255, 0.7); /* Tooltip background color with transparency */
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000;
+}
+
+#selected-name-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px; 
+    border: 1px solid #ccc;
+    border-radius: 10px; 
+    z-index: 1000;
+    visibility: hidden; 
+    font-size: 16px; 
+    font-weight: bold; 
+    font-style: italic; 
+}
+
+
+
+/* Position the main container to the right of the page */
+#main-container {
+    position: fixed;
+	top: 0px; 
+    right: 2px; 
+	width: 19.5%;
+    height: 100vh;
+    float: right;
+	display: flex;
+    flex-direction: column;
+}
+
+/* Style for the indicator title container */
+#indicator-title {
+    width: 100%; 
+    flex-grow: 0;
+    text-align: center; 
+	display:block;
+}
+
+#search-control {
+	display: block;
+    position: relative;
+    flex-grow: 0;
+	border-bottom: 1px solid #ccc; 
+	border-top: 1px solid #ccc; 
+}
+
+/* Style for the tables title container */
+#tables-title {
+    width: 100%;
+    flex-grow: 0;
+    text-align: left; 
+    margin: 10px 0;
+	display:block;
+}
+
+/* Style for the title (p) */
+.title {
+    font-size: 20px;
+    text-align: center; 
+    margin-top: 15px; 
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+/* Style for the description (p1 and p2) */
+.description {
+    font-size: 16px;
+    text-align: justify; 
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+/* Style for search container */
+.search-container {
+    display: block !important;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 10px;
+	width: 100%;
+	height: calc(100% - 95%);
+}
+
+/* Style for search subcontainers (select and button) */
+.search-container select {
+    flex: 70%;
+	margin-right: 2px;
+}
+
+.search-container button {
+    flex: 30%; 
+}
+
+
+/* Additional styles for other elements (name select, etc.) if needed */
+#search-name {
+    margin-right: 10px; 
+}
+
+/* Additional styles for other elements (search button, etc.) if needed */
+#search-btn {
+    margin-right: 10px; 
+	background-color: #f0f0f0;
+    border: 1px solid #ccc;
+}
+
+#search-btn:hover {
+    background-color: #d0d0d0; 
+}
+
+.descr-tbl {
+	font-size: 16px;
+    text-align: justify; 
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+#tables {
+    display: block;
+    position: relative;
+    flex-grow: 100;
+    overflow-y: auto;
+}
+
+/* Additional styles for other elements (county filter container, etc.) if needed */
+#county-filter-container {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px; /* Add margin between the county filter and other elements */
+    display: none; /* Initially set to invisible */
+}
+
+/* Additional styles for other elements (county filter select, etc.) if needed */
+#county-filter {
+    padding: 8px;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+
+/* Style for table containers */
+#table-container-layer1,
+#table-container-layer2 {
+    width: 100%; /* Adjust the width to fill the #tables container */
+    max-height: 700px;
+    overflow-y: auto;
+    background-color: white;
+    /*padding: 10px;*/
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    margin-top: 10px; /* Add margin between the tables and other elements */
+    display: none;
+    text-align: center; /* Center the content horizontally */
+}
+
+#table-container-layer1 table tr:not(:first-child):hover,
+#table-container-layer2 table tr:not(:first-child):hover {
+    background-color: #d0d0d0;
+    cursor: pointer;
+}
+
+#buttons {
+    display: flex;
+	width: 100%;
+    justify-content: space-between;
+    flex-grow: 0;
+	bottom: 20px;
+}
+
+/* Style for buttons */
+#open-table-layer1,
+#open-table-layer2 {
+    flex: 1;
+	width: 100%;
+	padding: 10px;
+    text-align: center;
+    background: linear-gradient(to bottom, #f0f0f0, #d0d0d0);
+    border: 1px solid #ccc;
+    color: #333; 
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+	transition: background-color 0.3s ease;
+}
+
+#open-table-layer1 {
+    left: 5px;
+}
+
+#open-table-layer2 {
+    right: 5px;
+}
+
+#open-table-layer1:hover,
+#open-table-layer2:hover {
+    background-color: #6c757d;
+}

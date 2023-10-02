@@ -1,0 +1,46 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+    height: 100vh;
+    float: left;
+	border-right: 1px solid black;
+}
+
+/* Position the main container to the right of the page */
+#main-container {
+    position: absolute;
+	top: 0px; 
+    right: 0px; 
+	width: 20%;
+    height: 100vh;
+    float: right;
+}
+
+/* Style for buttons */
+#open-table-layer1,
+#open-table-layer2 {
+    width: calc(50% - 10px); /* Each button covers 50% of the width with 5px spacing on each side */
+    padding: 10px; /* Add padding for spacing */
+    text-align: center; /* Center the text horizontally */
+    background: linear-gradient(to bottom, #f0f0f0, #d0d0d0); /* Button background gradient */
+    border: 1px solid #ccc; /* Button border */
+    color: #333; /* Button text color */
+    position: absolute; /* Position buttons absolutely within main-container */
+    bottom: 20px; /* Align buttons to the bottom of main-container with 5px spacing */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Box shadow for 3D effect */
+}
+
+#open-table-layer1 {
+    left: 5px; /* Position the second button 5px to the right */
+}
+
+#open-table-layer2 {
+    right: 5px; /* Position the second button 5px to the right */
+}

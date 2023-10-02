@@ -1,0 +1,47 @@
+/* Responsive CSS for smaller screens */
+@media screen and (max-width: 1400px) {
+	body {
+      background-size: 200%; /* Adjust the background size for smaller screens */
+   }
+	
+   .map-list li {
+      width: calc(50% - 2rem);
+   }
+   
+   h1 {
+      font-size: 20px; /* Reduce the font size for smaller screens */
+   }
+
+   .map-list li {
+      width: calc(35% - 2rem); /* Adjust the width for smaller screens */
+   }
+   
+   .map-list li a span.title {
+      font-size: 13px;
+   }
+   
+   .map-list li a span.descr {
+      font-size: 12px;
+   }
+   
+
+   footer img {
+      max-width: 50px;
+      height: 50px;
+   }
+   
+   footer a {
+      font-size: 14px;
+   }
+   
+   footer h4 {
+	   font-size: 14px;
+	   text-align: center;
+   }
+   
+   footer p {
+	   font-size: 14px;
+   }
+}
+   
+  

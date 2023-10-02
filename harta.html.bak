@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
     <link rel="stylesheet" href="http://localhost:8000/css/leaflet-geoman.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="http://localhost:8000/css/map.css">
+	
+
 	
 	
     <!-- Add script tags to include the necessary JavaScript files -->
@@ -19,154 +22,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="http://localhost:8000/js/map.js"></script>
 
-	
-	
-	<style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100vh;
-        }
-
-        .info.legend {
-            background-color: white;
-            padding: 6px 8px;
-            font: 14px/16px Arial, Helvetica, sans-serif;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-        }
-
-        .info.legend i {
-            width: 15px;
-            height: 15px;
-            float: left;
-            margin-right: 8px;
-            opacity: 0.7;
-        }
-
-        /* Define the legend colors based on your color scheme */
-        .info.legend i.red {
-            background-color: red;
-        }
-
-        .info.legend i.orange {
-            background-color: orange;
-        }
-
-        .info.legend i.yellow {
-            background-color: yellow;
-        }
-
-        .info.legend i.green {
-            background-color: green;
-        }
-
-		#zoomToFullData {
-			position: fixed;
-			top: 72px; 
-			left: 10px; 
-			padding: 10px;
-			background-color: #fff;
-			color: #000;
-			border: 2px solid rgba(100, 100, 100, 0.5);
-			border-radius: 4px;
-			cursor: pointer;
-			z-index: 1000;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 34px;
-			height: 34px;
-		}
-
-        #zoomToFullData:hover {
-			background-color: #fff;
-			color: #000;
-		}
-
-        #zoomToFullData:focus {
-            outline: none;
-        }
-
-        #zoomIcon {
-		font-size: 20px;
-		margin-right: 5px;
-		color: #000;
-		transform: scale(0.9);
-		}
-		
-		/* Custom CSS for feature tooltips */
-		.feature-tooltip {
-			background-color: rgba(255, 255, 255, 0.7); /* Tooltip background color with transparency */
-			padding: 4px 8px;
-			border-radius: 4px;
-			font-size: 12px;
-			font-weight: bold;
-			color: #000;
-		}
-		
-		#selected-name-label {
-			position: absolute;
-			top: 50%; /* Center the label vertically */
-			left: 50%; /* Center the label horizontally */
-			transform: translate(-50%, -50%); /* Adjust position after centering */
-			background-color: white;
-			padding: 10px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			z-index: 1000;
-			display: none;
-		}
-		
-		/* Position the table containers at the bottom of the page */
-		#table-container-layer1,
-		#table-container-layer2 {
-			position: absolute;
-			width: 50%; /* Take up half of the width of the horizontal line */
-			max-height: 20vh; /* Limit height to 20% of the viewport height */
-			overflow-y: auto; /* Add vertical scrollbar if content overflows */
-			background-color: white;
-			padding: 10px;
-			box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-			border-radius: 5px;
-			z-index: 1000;
-			display: none; /* Start with tables hidden */
-			bottom: 0; /* Position both tables at the bottom */
-		}
-
-		/* Position the first table at the left */
-		#table-container-layer1 {
-			left: 0;
-		}
-
-		/* Position the second table at the right */
-		#table-container-layer2 {
-			right: 0;
-		}
-		
-
-		  /* Style for the county filter select element */
-		  #county-filter {
-			position: absolute;
-			top: 0;
-			left: 0;
-			z-index: 2; /* Place it above the table and other objects */
-			padding: 5px;
-			border: 1px solid #ccc;
-			background-color: white;
-		  }
-
-
-
-
-    </style>
 </head>
 <body>
     <div id="map" class="map"></div>
@@ -177,69 +32,60 @@
 	<button id="zoomToFullData">
         <span class="material-icons" style="font-size: 20px;">zoom_out_map</span>
     </button>
-    
-	
-	<!-- Add the search bar container -->
-    <div id="search-bar">
-		<select id="search-county">
-			<!-- Populate the options dynamically using JavaScript -->
-		</select>
-		<select id="search-name">
-			<!-- Populate the options dynamically using JavaScript -->
-		</select>
-		<button id="search-btn">Search</button>
-	</div>
-	
-	<!-- Add div elements to hold the tables at the bottom of the page -->
-	<div id="table-container-layer1"></div>
-	<div id="table-container-layer2">
-	    <select id="county-filter">
-        <option value="">Judete</option>
-    </select>
+
+	<!-- Wrap the search bar and tables in a main container -->
+	<div id="main-container">
+		<div id="indicator-title">
+		<p class="title">Populaţia rezidentă pe sexe şi grupe de vârstă, la 1 decembrie 2021.</p>
+		<p class="description">Pentru selectarea și vizualizarea unui singur Municipiu, Oraș sau Comună se va realiza selecția județului și a Municipiului, Orașului sau Comunei dorite și apoi se va apăsa pe  butonul "Caută":</p>
+		</div> 
+		
+		<div id="search-control">
+		</div>
+		
+		<div id="tables-title">
+		<p class="descr-tbl">Valori indicatori repartizate pe unitati administrative:</p>
+		</div> 
+
+		
+		<!-- tables -->
+		<div id="tables">
+			<div id="county-filter-container">
+				<select id="county-filter">
+					<option value="">Judete</option>
+				</select>
+			</div>
+			<div id="table-container-layer1"></div>
+			<div id="table-container-layer2"></div>
+		</div>
+		
+		<!-- Add the buttons here -->
+		<div id="buttons">
+			<button id="open-table-layer1">Județe</button>
+			<button id="open-table-layer2">Municipii, Orașe sau Comune</button>
+		</div>
 	</div>
 	
 	<div id="selected-name-label"></div>
 	
     <script>
-        // Call setupMap function when the DOM is ready
-        document.addEventListener('DOMContentLoaded', function () {
-            var map = L.map('map').setView([45.943158, 24.966755], 8);
-            var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-            var url1 = 'http://localhost:8000/date/judete_4326_geom.geojson';
-            var url2 = 'http://localhost:8000/date/uat_4326_geom.geojson';
-			
-            Promise.all([fetch(url1), fetch(url2)])
-                .then(responses => Promise.all(responses.map(response => response.json())))
-                .then(data => {
-                    setupMap(map, osm, data); // Call the setupMap function with the map, osm, and data
-					
-					var selectedNameLabel = document.getElementById('selected-name-label'); // Get the label element
-					var searchButton = document.getElementById('search-btn'); // Get the search button
-					
-					// Initialize a flag to indicate if the label should be shown
-					var showLabel = false;
-
-					// Add event listener for the search button
-					searchButton.addEventListener('click', function () {
-						showLabel = true; // Set the flag to show the label
-					});
-					
-					// Add event listeners for zoom and move start events
-					map.on('zoomstart movestart', function () {
-						if (!showLabel) {
-							selectedNameLabel.style.visibility = 'hidden'; // Hide the label
-						}
-					});
-					
-					// Add event listeners for zoom and move end events
-					map.on('zoomend moveend', function () {
-						if (showLabel) {
-							selectedNameLabel.style.visibility = 'visible'; // Show the label
-						}
-					});
-                });
-        });
-
-    </script>
+	// Check the screen width and redirect if it's less than 768px
+    if (window.innerWidth < 768) {
+        window.location.href = 'under_construction.html';
+    }
+	// Call setupMap function when the DOM is ready
+	document.addEventListener('DOMContentLoaded', function () {
+		var map = L.map('map').setView([45.943158, 24.966755], 8);
+		var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+		var url1 = 'http://localhost:8000/date/judete_4326_geom.geojson';
+		var url2 = 'http://localhost:8000/date/uat_4326_geom.geojson';
+		
+		Promise.all([fetch(url1), fetch(url2)])
+			.then(responses => Promise.all(responses.map(response => response.json())))
+			.then(data => {
+				setupMap(map, osm, data); // Call the setupMap function with the map, osm, and data
+			});
+	});
+	</script>
 </body>
 </html>
