@@ -1,1 +1,1 @@
-<?php include_once("harta.html"); ?>
+<?php include_once("mainpage.html"); ?>
