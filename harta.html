@@ -7,20 +7,20 @@
 	<title>Leaflet-Geoman Choropleth Maps</title>
     <!-- Add links to CSS and JavaScript files -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
-    <link rel="stylesheet" href="http://localhost:8000/css/leaflet-geoman.css">
+    <link rel="stylesheet" href="/css/leaflet-geoman.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" href="https://st3f4nin.github.io/hartaindicatortest/css/map.css">
+	<link rel="stylesheet" href="/css/map.css">
 	
 
 	
 	
     <!-- Add script tags to include the necessary JavaScript files -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://st3f4nin.github.io/hartaindicatortest/js/leaflet-geoman.min.js"></script>
+    <script src="/js/leaflet-geoman.min.js"></script>
     <script src="https://unpkg.com/@turf/turf@latest"></script>
-    <script src="https://st3f4nin.github.io/hartaindicatortest/js/topojson.min.js"></script>
+    <script src="/js/topojson.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <script src="https://st3f4nin.github.io/hartaindicatortest/js/map.js"></script>
+    <script src="/js/map.js"></script>
 
 </head>
 <body>
@@ -77,8 +77,8 @@
 	document.addEventListener('DOMContentLoaded', function () {
 		var map = L.map('map').setView([45.943158, 24.966755], 8);
 		var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-		var url1 = 'https://st3f4nin.github.io/hartaindicatortest/date/judete_4326_geom.geojson';
-		var url2 = 'https://st3f4nin.github.io/hartaindicatortest/date/uat_4326_geom.geojson';
+		var url1 = '/date/judete_4326_geom.geojson';
+		var url2 = '/date/uat_4326_geom.geojson';
 		
 		Promise.all([fetch(url1), fetch(url2)])
 			.then(responses => Promise.all(responses.map(response => response.json())))
