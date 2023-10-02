@@ -6,7 +6,7 @@ body {
    display: flex;
    flex-direction: column;
    min-height: 100vh; /* Make sure the page is at least the height of the viewport */
-   background-image: url("/img/img_principala.jpg");
+   background-image: url("https://st3f4nin.github.io/hartaindicatortest/img/img_principala.jpg");
    background-size: 160vw;
    background-repeat: repeat;
    margin: 0;
