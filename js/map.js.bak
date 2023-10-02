@@ -528,7 +528,6 @@ function setupMap(map, osm, data) {
 						console.log('Variabla selected county in functia populare filtru: ', selectedCounty);
 						updateTableContentForLayer2(selectedCounty);
 					});	
-
 				}
 			});	
 

@@ -130,8 +130,8 @@ function setupMap(map, osm, data) {
     });
 
     // Load and parse judete_pop.csv and uat_pop.csv
-    var judetePopUrl = 'http://localhost:8000/date/judete_pop.csv';
-    var uatPopUrl = 'http://localhost:8000/date/uat_pop.csv';
+    var judetePopUrl = 'https://st3f4nin.github.io/hartaindicatortest/date/judete_pop.csv';
+    var uatPopUrl = 'https://st3f4nin.github.io/hartaindicatortest/date/uat_pop.csv';
     
 	Promise.all([fetch(judetePopUrl), fetch(uatPopUrl)])
         .then(responses => Promise.all(responses.map(response => response.text())))
